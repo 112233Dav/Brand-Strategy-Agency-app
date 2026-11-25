@@ -75,6 +75,8 @@ export default async function StrategyPhasePage({ params, searchParams }: PagePr
 
   const { data: project } = await supabase.from("strategy_projects").select("id,agency_id,client_id,name,current_phase,status").eq("id", projectId).maybeSingle();
   if (!project) notFound();
+  const { data: teamMembership } = await supabase.from("agency_members").select("agency_id").eq("agency_id", project.agency_id).eq("user_id", claims.claims.sub).maybeSingle();
+  if (!teamMembership) redirect("/portal");
   const { data: client } = await supabase.from("clients").select("name").eq("id", project.client_id).maybeSingle();
   const { data: records, error: recordsError } = phase === "discovery-research"
     ? await supabase.from("research_records").select("id,record_type,title,content,client_visible,created_at").eq("project_id", project.id).order("created_at", { ascending: false })
