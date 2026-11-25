@@ -99,9 +99,17 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .phase-placeholder { max-width: 680px; margin-top: 32px; }
 .phase-placeholder p { color: var(--muted); line-height: 1.6; }
 .inline-link { display: inline-block; margin-top: 12px; }
+.portal-project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 30px; }
+.portal-project-grid .panel h2 { margin: 8px 0; }
+.portal-layout .phase-nav > span { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; color: var(--muted); font-size: 13px; line-height: 1.35; }
+.portal-layout .phase-nav > span b { font: 700 11px 'Manrope', sans-serif; color: var(--green); }
+.portal-layout .phase-nav > span[aria-current=step] { background: #eaf3ee; color: var(--ink); font-weight: 700; }
+.portal-records { margin-top: 28px; }
+.portal-records h3 { margin: 8px 0; font: 700 20px 'Manrope', sans-serif; }
 
 @media (max-width: 900px) {
   .workspace-grid, .research-grid { grid-template-columns: 1fr; }
+  .portal-project-grid { grid-template-columns: 1fr; }
   .project-layout { grid-template-columns: 1fr; }
   .project-sidebar { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px; }
   .project-sidebar .back-link { margin-bottom: 18px; }
