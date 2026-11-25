@@ -1,12 +1,10 @@
-import { signIn, signUp } from "@/app/actions";
+import { signIn } from "@/app/actions";
 
-type LoginPageProps = { searchParams: Promise<{ error?: string; message?: string; setup?: string }> };
+type LoginPageProps = { searchParams: Promise<{ error?: string }> };
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams;
-  const supabaseReady = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
-  const message = params.message === "check-email" ? "Check your email to confirm your account." : null;
-  const error = params.error ? "We could not complete that request. Check your details and try again." : null;
+  const error = params.error ? "We couldn't sign you in. If this is your first visit, create an account and confirm your email first. Otherwise, check your email and password and try again." : null;
 
   return (
     <main>
@@ -14,18 +12,17 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <p className="eyebrow">BRAND STRATEGY STUDIO</p>
         <h1 id="login-title">Welcome back</h1>
         <p className="muted">Sign in to continue your client strategy work.</p>
-        {!supabaseReady && <p className="notice" role="status">Account access is being connected. Please check back shortly.</p>}
-        {message && <p className="notice" role="status">{message}</p>}
         {error && <p className="error" role="alert">{error}</p>}
-        <form action={signIn} className="auth-form" aria-disabled={!supabaseReady}>
+        <form action={signIn} className="auth-form">
           <label htmlFor="email">Work email</label>
           <input id="email" name="email" type="email" autoComplete="email" required />
           <label htmlFor="password">Password</label>
           <input id="password" name="password" type="password" autoComplete="current-password" required minLength={8} />
-          <button disabled={!supabaseReady} type="submit">Sign in</button>
-          <button disabled={!supabaseReady} className="secondary-button" formAction={signUp} type="submit">Create an account</button>
+          <button type="submit">Sign in</button>
         </form>
+        <p className="auth-footer">New to the studio? <a href="/signup">Create your account</a></p>
       </section>
     </main>
   );
 }
+
