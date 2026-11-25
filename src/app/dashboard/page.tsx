@@ -4,7 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data, error } = await supabase.auth.getClaims();
+  const claims = error ? null : data?.claims;
 
   if (!claims) redirect("/login");
 
@@ -28,3 +29,4 @@ export default async function DashboardPage() {
     </main>
   );
 }
+
