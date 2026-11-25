@@ -27,6 +27,10 @@ export default async function DashboardPage({ searchParams }: DashboardProps) {
   if (claimError || !claims?.claims?.sub) redirect("/login");
 
   const { data: agencies, error: agencyError } = await supabase.from("agencies").select("id,name").order("name");
+  if (!agencyError && !agencies?.length) {
+    const { data: portalAccess } = await supabase.from("client_portal_members").select("client_id").eq("user_id", claims.claims.sub).limit(1);
+    if (portalAccess?.length) redirect("/portal");
+  }
 
   return (
     <main className="dashboard-shell">
