@@ -29,15 +29,16 @@ export async function signIn(formData: FormData) {
 
 export async function signUp(formData: FormData) {
   const credentials = readCredentials(formData);
-  if (!credentials) redirect("/login?error=missing-fields");
+  if (!credentials) redirect("/signup?error=missing-fields");
 
   const supabase = await createClient();
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
   const { error } = await supabase.auth.signUp({
     ...credentials,
-    options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/auth/callback` },
+    options: { emailRedirectTo: `${siteUrl}/auth/callback` },
   });
-  if (error) redirect("/login?error=sign-up-failed");
-  redirect("/login?message=check-email");
+  if (error) redirect("/signup?error=sign-up-failed");
+  redirect("/signup?message=check-email");
 }
 
 export async function signOut() {
