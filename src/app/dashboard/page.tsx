@@ -3,6 +3,10 @@ import { signOut } from "@/app/actions";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+    redirect("/login?setup=supabase");
+  }
+
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
   const claims = error ? null : data?.claims;
@@ -29,4 +33,3 @@ export default async function DashboardPage() {
     </main>
   );
 }
-
